@@ -1,9 +1,9 @@
-import type {SupergrokModelId} from './supergrok-language-model'
+import type {SupergrokModelId} from './languageModel.ts'
 import type {LanguageModelV3} from '@ai-sdk/provider'
 import type {FetchFunction} from '@ai-sdk/provider-utils'
 
-import {SupergrokLanguageModel} from './supergrok-language-model'
-import {SupergrokTokenManager} from './supergrok-token-manager'
+import {SupergrokLanguageModel} from './languageModel.ts'
+import {SupergrokTokenManager} from './tokenManager.ts'
 
 export interface SupergrokProviderOptions {
   /**
@@ -147,7 +147,7 @@ export function createSupergrok(options: SupergrokProviderOptions = {}): Supergr
 
 export default createSupergrok
 
-export {SupergrokLanguageModel} from './supergrok-language-model'
-export type {SupergrokModelId} from './supergrok-language-model'
-export {getJwtExpiresAt, SupergrokTokenManager} from './supergrok-token-manager'
-export type {SupergrokTokenPair} from './supergrok-token-manager'
+export {SupergrokLanguageModel} from './languageModel.ts'
+export type {SupergrokModelId} from './languageModel.ts'
+export {getJwtExpiresAt, SupergrokTokenManager} from './tokenManager.ts'
+export type {SupergrokTokenPair} from './tokenManager.ts'
