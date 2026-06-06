@@ -1,4 +1,4 @@
-import { z } from 'zod/v4'
+import {z} from 'zod/v4'
 
 const webSourceSchema = z.object({
   type: z.literal('web'),
@@ -7,28 +7,24 @@ const webSourceSchema = z.object({
   allowedWebsites: z.array(z.string()).max(5).optional(),
   safeSearch: z.boolean().optional(),
 })
-
 const xSourceSchema = z.object({
   type: z.literal('x'),
   excludedXHandles: z.array(z.string()).optional(),
   includedXHandles: z.array(z.string()).optional(),
-  postFavoriteCount: z.number().int().optional(),
-  postViewCount: z.number().int().optional(),
+  postFavoriteCount: z.int().optional(),
+  postViewCount: z.int().optional(),
   xHandles: z.array(z.string()).optional(),
 })
-
 const newsSourceSchema = z.object({
   type: z.literal('news'),
   country: z.string().length(2).optional(),
   excludedWebsites: z.array(z.string()).max(5).optional(),
   safeSearch: z.boolean().optional(),
 })
-
 const rssSourceSchema = z.object({
   type: z.literal('rss'),
-  links: z.array(z.string().url()).max(1),
+  links: z.array(z.url()).max(1),
 })
-
 const searchSourceSchema = z.discriminatedUnion('type', [
   webSourceSchema,
   xSourceSchema,
@@ -45,7 +41,7 @@ const searchSourceSchema = z.discriminatedUnion('type', [
 export const supergrokProviderOptionsSchema = z.object({
   reasoningEffort: z.enum(['none', 'low', 'medium', 'high']).optional(),
   logprobs: z.boolean().optional(),
-  topLogprobs: z.number().int().min(0).max(8).optional(),
+  topLogprobs: z.int().min(0).max(8).optional(),
   parallelFunctionCalling: z.boolean().optional(),
 
   /**

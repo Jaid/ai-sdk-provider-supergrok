@@ -1,9 +1,26 @@
-import type { LanguageModelV3 } from '@ai-sdk/provider'
-import type { FetchFunction } from '@ai-sdk/provider-utils'
-import { SupergrokLanguageModel, type SupergrokModelId } from './supergrok-language-model'
-import { SupergrokTokenManager } from './supergrok-token-manager'
+import type {SupergrokModelId} from './supergrok-language-model'
+import type {LanguageModelV3} from '@ai-sdk/provider'
+import type {FetchFunction} from '@ai-sdk/provider-utils'
+
+import {SupergrokLanguageModel} from './supergrok-language-model'
+import {SupergrokTokenManager} from './supergrok-token-manager'
 
 export interface SupergrokProviderOptions {
+  /**
+   * xAI OAuth access token (JWT bearer).
+   *
+   * If provided without a refresh token, the session will fail when the
+   * access token expires during a call.
+   */
+  accessToken?: string
+
+  /**
+   * Base URL for the xAI API.
+   *
+   * @default 'https://api.x.ai/v1'
+   */
+  baseURL?: string
+
   /**
    * A name identifying your client, sent in the User-Agent header.
    *
@@ -12,12 +29,20 @@ export interface SupergrokProviderOptions {
   clientName?: string
 
   /**
-   * xAI OAuth access token (JWT bearer).
-   *
-   * If provided without a refresh token, the session will fail when the
-   * access token expires during a call.
+   * Custom fetch implementation for middleware / testing.
    */
-  accessToken?: string
+  fetch?: FetchFunction
+
+  /**
+   * Called after every successful token refresh, including initial
+   * access-token claims when only a refresh token was provided.
+   * Use this to persist rotated token pairs.
+   */
+  onTokenRefresh?: (tokens: {
+    accessToken: string
+    expiresAt?: number
+    refreshToken: string
+  }) => Promise<void> | void
 
   /**
    * xAI OAuth refresh token.
@@ -31,34 +56,11 @@ export interface SupergrokProviderOptions {
   refreshToken?: string
 
   /**
-   * Base URL for the xAI API.
-   *
-   * @default 'https://api.x.ai/v1'
-   */
-  baseURL?: string
-
-  /**
-   * Custom fetch implementation for middleware / testing.
-   */
-  fetch?: FetchFunction
-
-  /**
    * xAI OAuth token endpoint.
    *
    * @default 'https://auth.x.ai/oauth2/token'
    */
   tokenUrl?: string
-
-  /**
-   * Called after every successful token refresh, including initial
-   * access-token claims when only a refresh token was provided.
-   * Use this to persist rotated token pairs.
-   */
-  onTokenRefresh?: (tokens: {
-    accessToken: string
-    refreshToken: string
-    expiresAt?: number
-  }) => void | Promise<void>
 }
 
 export interface SupergrokProvider {
@@ -66,11 +68,10 @@ export interface SupergrokProvider {
    * Creates a language model instance for the given model ID.
    */
   (modelId: SupergrokModelId): LanguageModelV3
-
   /**
    * Creates a language model instance for the given model ID.
    */
-  languageModel(modelId: SupergrokModelId): LanguageModelV3
+  languageModel: (modelId: SupergrokModelId) => LanguageModelV3
 
   /**
    * The specification version of this provider.
@@ -110,22 +111,16 @@ export interface SupergrokProvider {
  * ```
  */
 export function createSupergrok(options: SupergrokProviderOptions = {}): SupergrokProvider {
-  const {
-    clientName,
+  const {clientName,
     accessToken,
     refreshToken,
     baseURL = 'https://api.x.ai/v1',
     fetch: customFetch,
     tokenUrl,
-    onTokenRefresh,
-  } = options
-
+    onTokenRefresh} = options
   if (!accessToken && !refreshToken) {
-    throw new Error(
-      'ai-sdk-provider-supergrok: at least one of accessToken or refreshToken must be provided',
-    )
+    throw new Error('ai-sdk-provider-supergrok: at least one of accessToken or refreshToken must be provided')
   }
-
   const tokenManager = new SupergrokTokenManager({
     clientName,
     accessToken,
@@ -134,7 +129,6 @@ export function createSupergrok(options: SupergrokProviderOptions = {}): Supergr
     fetch: customFetch,
     onTokenRefresh,
   })
-
   const languageModelFn = (modelId: SupergrokModelId): LanguageModelV3 => {
     return new SupergrokLanguageModel(modelId, {
       provider: 'supergrok',
@@ -144,18 +138,16 @@ export function createSupergrok(options: SupergrokProviderOptions = {}): Supergr
       fetch: customFetch,
     })
   }
-
   const provider = Object.assign(languageModelFn, {
     specificationVersion: 'v3' as const,
     languageModel: languageModelFn,
   })
-
   return provider
 }
 
 export default createSupergrok
 
-export { SupergrokLanguageModel } from './supergrok-language-model'
-export { SupergrokTokenManager, getJwtExpiresAt } from './supergrok-token-manager'
-export type { SupergrokTokenPair } from './supergrok-token-manager'
-export type { SupergrokModelId } from './supergrok-language-model'
+export {SupergrokLanguageModel} from './supergrok-language-model'
+export type {SupergrokModelId} from './supergrok-language-model'
+export {getJwtExpiresAt, SupergrokTokenManager} from './supergrok-token-manager'
+export type {SupergrokTokenPair} from './supergrok-token-manager'

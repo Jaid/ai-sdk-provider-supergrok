@@ -1,43 +1,8 @@
 {
   "name": "ai-sdk-provider-supergrok",
   "version": "0.1.0",
-  "description": "Vercel AI SDK provider for SuperGrok — xAI OAuth subscription using Grok quota instead of API credit",
   "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
-    },
-    "./package.json": "./package.json"
-  },
-  "files": [
-    "dist",
-    "src"
-  ],
-  "scripts": {
-    "build": "tsc",
-    "typecheck": "tsc --noEmit",
-    "test": "bun test"
-  },
-  "dependencies": {
-    "@ai-sdk/provider": "3.0.10",
-    "@ai-sdk/provider-utils": "4.0.27",
-    "zod": "4.4.3"
-  },
-  "devDependencies": {
-    "@types/bun": "latest",
-    "ai": "6.0.197",
-    "eslint-plugin-zod": "^4.7.0",
-    "tsconfig-jaid-bun": "^15.2.0",
-    "typescript": "^5"
-  },
-  "peerDependencies": {
-    "ai": ">=4.0.0"
-  },
+  "description": "Vercel AI SDK provider for SuperGrok — xAI OAuth subscription using Grok quota instead of API credit",
   "keywords": [
     "ai-sdk",
     "ai-sdk-provider",
@@ -47,5 +12,40 @@
     "oauth",
     "subscription"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@ai-sdk/provider": "3.0.10",
+    "@ai-sdk/provider-utils": "4.0.27",
+    "zod": "4.4.3"
+  },
+  "peerDependencies": {
+    "ai": ">=4.0.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "ai": "6.0.197",
+    "eslint-plugin-zod": "^4.7.0",
+    "tsconfig-jaid-bun": "^15.2.0",
+    "typescript": "^5"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts"
 }

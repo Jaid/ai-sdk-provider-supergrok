@@ -1,41 +1,42 @@
-import type { LanguageModelV3CallOptions, SharedV3Warning } from '@ai-sdk/provider'
+import type {LanguageModelV3CallOptions, SharedV3Warning} from '@ai-sdk/provider'
 
 type XaiTool = {
-  type: 'function'
   function: {
-    name: string
     description: string
+    name: string
     parameters: Record<string, unknown>
   }
+  type: 'function'
 }
 
-type XaiToolChoice =
-  | 'none'
+type XaiToolChoice
+  = | {function: {name: string}
+    type: 'function'}
   | 'auto'
+  | 'none'
   | 'required'
-  | { type: 'function'; function: { name: string } }
 
 /**
  * Converts AI SDK v3 tool definitions into the xAI chat completions format.
  */
-export function prepareTools({
-  tools,
-  toolChoice,
-}: {
-  tools: LanguageModelV3CallOptions['tools']
+export function prepareTools({tools,
+  toolChoice}: {
   toolChoice: LanguageModelV3CallOptions['toolChoice']
+  tools: LanguageModelV3CallOptions['tools']
 }): {
-  tools: XaiTool[] | undefined
   toolChoice: XaiToolChoice | undefined
-  toolWarnings: SharedV3Warning[]
+  tools: Array<XaiTool> | undefined
+  toolWarnings: Array<SharedV3Warning>
 } {
-  const toolWarnings: SharedV3Warning[] = []
-
+  const toolWarnings: Array<SharedV3Warning> = []
   if (!tools || tools.length === 0) {
-    return { tools: undefined, toolChoice: undefined, toolWarnings }
+    return {
+      tools: undefined,
+      toolChoice: undefined,
+      toolWarnings,
+    }
   }
-
-  const xaiTools: XaiTool[] = []
+  const xaiTools: Array<XaiTool> = []
   for (const tool of tools) {
     if (tool.type === 'function') {
       xaiTools.push({
@@ -53,28 +54,30 @@ export function prepareTools({
       })
     }
   }
-
   let xaiToolChoice: XaiToolChoice | undefined
   if (toolChoice) {
     switch (toolChoice.type) {
-      case 'none':
+      case 'none': {
         xaiToolChoice = 'none'
         break
-      case 'auto':
+      }
+      case 'auto': {
         xaiToolChoice = 'auto'
         break
-      case 'required':
+      }
+      case 'required': {
         xaiToolChoice = 'required'
         break
-      case 'tool':
+      }
+      case 'tool': {
         xaiToolChoice = {
           type: 'function',
-          function: { name: toolChoice.toolName },
+          function: {name: toolChoice.toolName},
         }
         break
+      }
     }
   }
-
   return {
     tools: xaiTools.length > 0 ? xaiTools : undefined,
     toolChoice: xaiToolChoice,
