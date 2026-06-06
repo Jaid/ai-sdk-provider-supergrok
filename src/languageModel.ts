@@ -543,7 +543,7 @@ export class SupergrokLanguageModel implements LanguageModelV3 {
     return combineHeaders(callHeaders, {
       authorization: `Bearer ${accessToken}`,
       ...this.config.clientName && {
-        'user-agent': `${this.config.clientName} ai-sdk-supergrok/${VERSION}`,
+        'user-agent': `ai/6 ai-sdk-provider-supergrok/${Bun.env.npm_package_version} ${this.config.clientName}`,
       },
     })
   }
