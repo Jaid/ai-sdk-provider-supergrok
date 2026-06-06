@@ -91,7 +91,7 @@ export interface SupergrokProvider {
  * @example
  * ```ts
  * import { generateText } from 'ai'
- * import { createSupergrok } from 'ai-sdk-provider-supergrok'
+ * import createSupergrok from 'ai-sdk-provider-supergrok'
  *
  * const createModel = createSupergrok({
  *   clientName: 'my_custom_client/v1',
@@ -110,7 +110,7 @@ export interface SupergrokProvider {
  * })
  * ```
  */
-export function createSupergrok(options: SupergrokProviderOptions = {}): SupergrokProvider {
+function createSupergrok(options: SupergrokProviderOptions = {}): SupergrokProvider {
   const {clientName,
     accessToken,
     refreshToken,
