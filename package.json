@@ -13,6 +13,10 @@
     "subscription"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jaid/ai-sdk-provider-supergrok.git"
+  },
   "exports": {
     ".": {
       "default": "./src/main.ts"
