@@ -35,7 +35,6 @@ describe('token inspection (offline)', () => {
     // Expiry should be in the future or very recent past (not epoch 0)
     expect(exp).toBeGreaterThan(1_000_000_000_000)
   })
-
   it('detects whether the access token has an exp claim', () => {
     if (!accessToken) {
       return

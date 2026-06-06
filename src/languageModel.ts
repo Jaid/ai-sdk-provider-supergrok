@@ -14,11 +14,11 @@ import {combineHeaders,
   postJsonToApi} from '@ai-sdk/provider-utils'
 import zod from 'zod'
 
+import {convertToXaiMessages} from './convertMessages.ts'
+import {supergrokFailedResponseHandler} from './error.ts'
 import {mapSupergrokFinishReason} from './mapFinishReason.ts'
 import {prepareTools} from './prepareTools.ts'
 import {supergrokProviderOptionsSchema} from './providerOptions.ts'
-import {convertToXaiMessages} from './convertMessages.ts'
-import {supergrokFailedResponseHandler} from './error.ts'
 import {VERSION} from './version.ts'
 
 // ─── public types ───────────────────────────────────────────────────────────
