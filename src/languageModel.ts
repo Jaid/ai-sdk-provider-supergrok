@@ -3,14 +3,10 @@ import type {SupergrokTokenManager} from './tokenManager.ts'
 import type {LanguageModelV3, LanguageModelV3CallOptions, LanguageModelV3Content, LanguageModelV3FinishReason, LanguageModelV3GenerateResult, LanguageModelV3StreamPart, LanguageModelV3StreamResult, LanguageModelV3Usage, SharedV3Warning} from '@ai-sdk/provider'
 import type {FetchFunction, ParseResult} from '@ai-sdk/provider-utils'
 
-import {APICallError} from '@ai-sdk/provider'
 import {combineHeaders,
   createEventSourceResponseHandler,
   createJsonResponseHandler,
-  extractResponseHeaders,
-
   parseProviderOptions,
-
   postJsonToApi} from '@ai-sdk/provider-utils'
 import zod from 'zod'
 
@@ -19,7 +15,6 @@ import {supergrokFailedResponseHandler} from './error.ts'
 import {mapSupergrokFinishReason} from './mapFinishReason.ts'
 import {prepareTools} from './prepareTools.ts'
 import {supergrokProviderOptionsSchema} from './providerOptions.ts'
-import {VERSION} from './version.ts'
 
 // ─── public types ───────────────────────────────────────────────────────────
 
