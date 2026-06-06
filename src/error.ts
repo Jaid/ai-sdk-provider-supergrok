@@ -1,11 +1,11 @@
 import {createJsonErrorResponseHandler} from '@ai-sdk/provider-utils'
-import {z} from 'zod/v4'
+import zod from 'zod'
 
-const xaiErrorSchema = z.object({
-  error: z.object({
-    message: z.string(),
-    type: z.string().nullish(),
-    code: z.string().nullish(),
+const xaiErrorSchema = zod.object({
+  error: zod.object({
+    message: zod.string(),
+    type: zod.string().nullish(),
+    code: zod.string().nullish(),
   }),
 })
 

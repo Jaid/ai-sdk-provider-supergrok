@@ -1,7 +1,7 @@
 import {describe, expect, it} from 'bun:test'
 
 import {generateText, Output, streamText} from 'ai'
-import {z} from 'zod/v4'
+import zod from 'zod'
 
 import {createSupergrok, getJwtExpiresAt} from '../src/index.ts'
 
@@ -217,10 +217,10 @@ describe('structured output (live)', () => {
     const response = await generateText({
       model: sharedCreateModel('grok-build-0.1'),
       output: Output.object({
-        schema: z.object({
-          name: z.string(),
-          age: z.number(),
-          city: z.string(),
+        schema: zod.object({
+          name: zod.string(),
+          age: zod.number(),
+          city: zod.string(),
         }),
       }),
       messages: [

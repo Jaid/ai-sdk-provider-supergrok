@@ -12,7 +12,7 @@ import {combineHeaders,
   parseProviderOptions,
 
   postJsonToApi} from '@ai-sdk/provider-utils'
-import {z} from 'zod/v4'
+import zod from 'zod'
 
 import {mapSupergrokFinishReason} from './mapFinishReason.ts'
 import {prepareTools} from './prepareTools.ts'
@@ -35,80 +35,80 @@ export interface SupergrokLanguageModelConfig {
 
 // ─── response schemas ───────────────────────────────────────────────────────
 
-const xaiUsageSchema = z.object({
-  prompt_tokens: z.number(),
-  completion_tokens: z.number(),
-  total_tokens: z.number(),
-  prompt_tokens_details: z
+const xaiUsageSchema = zod.object({
+  prompt_tokens: zod.number(),
+  completion_tokens: zod.number(),
+  total_tokens: zod.number(),
+  prompt_tokens_details: zod
     .object({
-      cached_tokens: z.number().nullish(),
-      text_tokens: z.number().nullish(),
-      image_tokens: z.number().nullish(),
+      cached_tokens: zod.number().nullish(),
+      text_tokens: zod.number().nullish(),
+      image_tokens: zod.number().nullish(),
     })
     .nullish(),
-  completion_tokens_details: z
+  completion_tokens_details: zod
     .object({
-      reasoning_tokens: z.number().nullish(),
+      reasoning_tokens: zod.number().nullish(),
     })
     .nullish(),
 })
-const xaiChatResponseSchema = z.object({
-  id: z.string().nullish(),
-  created: z.number().nullish(),
-  model: z.string().nullish(),
-  object: z.literal('chat.completion').nullish(),
-  choices: z
-    .array(z.object({
-      index: z.number(),
-      message: z.object({
-        role: z.literal('assistant'),
-        content: z.string().nullish(),
-        reasoning_content: z.string().nullish(),
-        tool_calls: z
-          .array(z.object({
-            id: z.string(),
-            type: z.literal('function'),
-            function: z.object({
-              name: z.string(),
-              arguments: z.string(),
+const xaiChatResponseSchema = zod.object({
+  id: zod.string().nullish(),
+  created: zod.number().nullish(),
+  model: zod.string().nullish(),
+  object: zod.literal('chat.completion').nullish(),
+  choices: zod
+    .array(zod.object({
+      index: zod.number(),
+      message: zod.object({
+        role: zod.literal('assistant'),
+        content: zod.string().nullish(),
+        reasoning_content: zod.string().nullish(),
+        tool_calls: zod
+          .array(zod.object({
+            id: zod.string(),
+            type: zod.literal('function'),
+            function: zod.object({
+              name: zod.string(),
+              arguments: zod.string(),
             }),
           }))
           .nullish(),
       }),
-      finish_reason: z.string().nullish(),
+      finish_reason: zod.string().nullish(),
     }))
     .nullish(),
   usage: xaiUsageSchema.nullish(),
 })
-const xaiChatChunkSchema = z.object({
-  id: z.string().nullish(),
-  created: z.number().nullish(),
-  model: z.string().nullish(),
-  choices: z.array(z.object({
-    index: z.number(),
-    delta: z.object({
-      role: z.enum(['assistant']).optional(),
-      content: z.string().nullish(),
-      reasoning_content: z.string().nullish(),
-      tool_calls: z
-        .array(z.object({
-          id: z.string(),
-          type: z.literal('function'),
-          function: z.object({
-            name: z.string(),
-            arguments: z.string(),
+const xaiChatChunkSchema = zod.object({
+  id: zod.string().nullish(),
+  created: zod.number().nullish(),
+  model: zod.string().nullish(),
+  choices: zod.array(zod.object({
+    index: zod.number(),
+    delta: zod.object({
+      role: zod.enum(['assistant']).optional(),
+      content: zod.string().nullish(),
+      reasoning_content: zod.string().nullish(),
+      tool_calls: zod
+        .array(zod.object({
+          id: zod.string(),
+          type: zod.literal('function'),
+          function: zod.object({
+            name: zod.string(),
+            arguments: zod.string(),
           }),
         }))
         .nullish(),
     }),
-    finish_reason: z.string().nullish(),
+    finish_reason: zod.string().nullish(),
   })),
   usage: xaiUsageSchema.nullish(),
 })
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 
-function convertUsage(usage: z.infer<typeof xaiUsageSchema> | null | undefined): LanguageModelV3Usage {
+function convertUsage(usage: zod.infer<typeof xaiUsageSchema> | null | undefined): LanguageModelV3Usage {
   if (!usage) {
     return {
       inputTokens: {
@@ -243,7 +243,7 @@ export class SupergrokLanguageModel implements LanguageModelV3 {
       fetch: this.config.fetch,
     })) as {
       responseHeaders?: Record<string, string>
-      value: ReadableStream<ParseResult<z.infer<typeof xaiChatChunkSchema>>>
+      value: ReadableStream<ParseResult<zod.infer<typeof xaiChatChunkSchema>>>
     }
     const {value: stream, responseHeaders} = result
     let finishReason: LanguageModelV3FinishReason = {
@@ -255,7 +255,7 @@ export class SupergrokLanguageModel implements LanguageModelV3 {
     let activeReasoningBlockId: string | undefined
     return {
       stream: stream.pipeThrough(new TransformStream<
-        ParseResult<z.infer<typeof xaiChatChunkSchema>>,
+        ParseResult<zod.infer<typeof xaiChatChunkSchema>>,
         LanguageModelV3StreamPart
       >({
         start(controller) {
