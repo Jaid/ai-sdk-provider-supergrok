@@ -2,7 +2,7 @@
   "name": "ai-sdk-provider-supergrok",
   "version": "0.1.0",
   "type": "module",
-  "description": "Vercel AI SDK provider for SuperGrok — xAI OAuth subscription using Grok quota instead of API credit",
+  "description": "Vercel AI SDK provider for SuperGrok (OAuth subscription using the included Grok quota instead of API credit)",
   "keywords": [
     "ai-sdk",
     "ai-sdk-provider",

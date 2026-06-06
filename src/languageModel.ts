@@ -1,5 +1,5 @@
-import type {SupergrokProviderOptions} from './supergrok-provider-options'
-import type {SupergrokTokenManager} from './supergrok-token-manager'
+import type {SupergrokProviderOptions} from './providerOptions.ts'
+import type {SupergrokTokenManager} from './tokenManager.ts'
 import type {LanguageModelV3, LanguageModelV3CallOptions, LanguageModelV3Content, LanguageModelV3FinishReason, LanguageModelV3GenerateResult, LanguageModelV3StreamPart, LanguageModelV3StreamResult, LanguageModelV3Usage, SharedV3Warning} from '@ai-sdk/provider'
 import type {FetchFunction, ParseResult} from '@ai-sdk/provider-utils'
 
@@ -16,10 +16,10 @@ import {z} from 'zod/v4'
 
 import {convertToXaiMessages} from './supergrok-convert-messages'
 import {supergrokFailedResponseHandler} from './supergrok-error'
-import {mapSupergrokFinishReason} from './supergrok-map-finish-reason'
-import {prepareTools} from './supergrok-prepare-tools'
-import {supergrokProviderOptionsSchema} from './supergrok-provider-options'
-import {VERSION} from './version'
+import {mapSupergrokFinishReason} from './mapFinishReason.ts'
+import {prepareTools} from './prepareTools.ts'
+import {supergrokProviderOptionsSchema} from './providerOptions.ts'
+import {VERSION} from './version.ts'
 
 // ─── public types ───────────────────────────────────────────────────────────
 
