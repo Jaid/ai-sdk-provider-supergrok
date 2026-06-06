@@ -3,7 +3,7 @@ import type {LanguageModelV3Prompt} from '@ai-sdk/provider'
 import {describe, expect, it, test} from 'bun:test'
 
 import {convertToXaiMessages} from '../src/convertMessages.ts'
-import {createSupergrok, getJwtExpiresAt} from '../src/index'
+import {createSupergrok, getJwtExpiresAt} from '../src/main.ts'
 import {mapSupergrokFinishReason} from '../src/mapFinishReason.ts'
 import {prepareTools} from '../src/prepareTools.ts'
 import {SupergrokTokenManager} from '../src/tokenManager.ts'

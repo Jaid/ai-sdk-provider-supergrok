@@ -3,7 +3,7 @@ import {describe, expect, it} from 'bun:test'
 import {generateText, Output, streamText} from 'ai'
 import zod from 'zod'
 
-import {createSupergrok, getJwtExpiresAt} from '../src/index.ts'
+import {createSupergrok, getJwtExpiresAt} from '../src/main.ts'
 
 // ─── env validation ─────────────────────────────────────────────────────────
 
