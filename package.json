@@ -32,6 +32,7 @@
     "@types/bun": "latest",
     "ai": "6.0.197",
     "eslint-plugin-zod": "^4.7.0",
+    "tsconfig-jaid-bun": "^15.2.0",
     "typescript": "^5"
   },
   "peerDependencies": {
