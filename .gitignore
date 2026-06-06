@@ -14,7 +14,7 @@
 
 # dotenv
 .env
-
+!src/docker/home/.env
 
 # Bun
 node_modules/
