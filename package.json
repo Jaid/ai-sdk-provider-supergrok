@@ -26,6 +26,10 @@
     "#src/*": "./src/*",
     "#root/*": "./*"
   },
+  "scripts": {
+    "lint": "eslint .",
+    "test": "bun test"
+  },
   "dependencies": {
     "@ai-sdk/provider": "3.0.10",
     "@ai-sdk/provider-utils": "4.0.27",
@@ -40,6 +44,7 @@
     "eslint": "^10.4.1",
     "eslint-config-jaid": "^26.0.0",
     "eslint-plugin-zod": "^4.7.0",
+    "jiti": "^2.6.2",
     "tsconfig-jaid-bun": "^15.2.0",
     "typescript": "^6.0.3"
   }

@@ -110,7 +110,7 @@ export interface SupergrokProvider {
  * })
  * ```
  */
-function createSupergrok(options: SupergrokProviderOptions = {}): SupergrokProvider {
+export function createSupergrok(options: SupergrokProviderOptions = {}): SupergrokProvider {
   const {clientName,
     accessToken,
     refreshToken,
